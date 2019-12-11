@@ -192,7 +192,9 @@
     ];
 
     var temp_users = [];
-    temp_users = _filter(users,function(val){return val.age >= 30});
+    temp_users = _filter(users, function (val) {
+      return val.age >= 30
+    });
     console.log(temp_users);
 
     var names = [];
@@ -202,7 +204,9 @@
     console.log(names);
 
     var temp_users = [];
-    temp_users =  _filter(users,function(val){return val.age < 30});
+    temp_users = _filter(users, function (val) {
+      return val.age < 30
+    });
     console.log(temp_users);
     // console.log(
     //   _filter(users,function(val){return val.age >= 30})
@@ -218,54 +222,72 @@
     // );
 
 
-  console.clear();
+    console.clear();
 
-  var over_30 = _filter(users,function(val){return val.age >= 30});
-  var names = _map(over_30,function(val){return val.name});
+    var over_30 = _filter(users, function (val) {
+      return val.age >= 30
+    });
+    var names = _map(over_30, function (val) {
+      return val.name
+    });
 
-  console.log(names);
-  var under_30 =  _filter(users,function(val){return val.age < 30});
-  var age = _map(under_30,function(val){return val.age});
+    console.log(names);
+    var under_30 = _filter(users, function (val) {
+      return val.age < 30
+    });
+    var age = _map(under_30, function (val) {
+      return val.age
+    });
 
-  console.log(age);
-  console.log(
-    _map([1,2,3],function(num){return num * 2})
-  );
-console.clear();
-  
-
-console.log(
-  _map(
-    _filter(users,function(users){return users.age >= 30}),
-    function(user){return user.name}));
-
-console.log(
-  _map(
-    _filter(users,function(users){return users.age < 30}),
-    function(user){return user.age}));
+    console.log(age);
+    console.log(
+      _map([1, 2, 3], function (num) {
+        return num * 2
+      })
+    );
+    console.clear();
 
 
     console.log(
-      [1,2,3].map(function(val){
-      return  val*2
-    })
+      _map(
+        _filter(users, function (users) {
+          return users.age >= 30
+        }),
+        function (user) {
+          return user.name
+        }));
+
+    console.log(
+      _map(
+        _filter(users, function (users) {
+          return users.age < 30
+        }),
+        function (user) {
+          return user.age
+        }));
+
+
+    console.log(
+      [1, 2, 3].map(function (val) {
+        return val * 2
+      })
     );
     console.log(
-      [1,2,3,4].filter(function(val){
-      return val > 2
+      [1, 2, 3, 4].filter(function (val) {
+        return val > 2
       })
     );
 
-    
+
     console.log(
-      _map(document.getElementsByTagName('*'),function(val){
+      _map(document.getElementsByTagName('*'), function (val) {
         return val.nodeName
       })
     );
-// 함수형에선 콜백함수의 이름이 중요함, 무조건 돌려주기만 하는 함수는 콜백
-// 조건이 들어가는 함수는 프리디케이트 함수
-// 반복문을 돌려주는 함수는 이터함수
-// 매핑을 해주는 함수는 mapper함수
+    // 함수형에선 콜백함수의 이름이 중요함, 무조건 돌려주기만 하는 함수는 콜백
+    // 조건이 들어가는 함수는 프리디케이트 함수
+    // 반복문을 돌려주는 함수는 이터함수
+    // 매핑을 해주는 함수는 mapper함수
 
 
     // var add =   _curry(add);
@@ -277,17 +299,17 @@ console.log(
     //   return a+b
     // });
     // var add10 = add(10);
-    
+
     // console.log(
     //   add10(5)
     // );
 
-    var c_add = _curry(function(a,b){
-      return a*50 + b+50 
+    var c_add = _curry(function (a, b) {
+      return a * 50 + b + 50
     });
 
     console.log(
-      c_add(add(10,10))(50)
+      c_add(add(10, 10))(50)
     );
 
     var add10 = c_add(10);
@@ -301,11 +323,11 @@ console.log(
 
 
     console.log(
-      c_add(10,5)
+      c_add(10, 5)
     );
     console.clear();
 
-    var addFn = _curry(function(a,b){
+    var addFn = _curry(function (a, b) {
       return a + b
     });
 
@@ -314,22 +336,22 @@ console.log(
     console.log(add20);
 
     console.log(
-      addFn(10,10)
+      addFn(10, 10)
     );
 
-    var subFn = _curry(function(a,b){
+    var subFn = _curry(function (a, b) {
       return a - b;
     });
     console.log(
-      subFn(10,5)
+      subFn(10, 5)
     );
     var sub10 = subFn(10);
     console.log(
       sub10(5)
     );
 
-    var sub = _curryr(function(a,b){
-      return a- b
+    var sub = _curryr(function (a, b) {
+      return a - b
     });
     var sub10 = sub(10);
     console.log(
@@ -342,7 +364,7 @@ console.log(
     console.log(
       _get('name')(user1)
     );
-    
+
     var _get_name = _get('name');
     console.log(
       _get_name(users[1])
@@ -352,18 +374,99 @@ console.log(
     );
 
 
-console.log(
-  _map(
-    _filter(users,function(users){return users.age >= 30}),
-    function(user){return user.name}));
+    console.log(
+      _map(
+        _filter(users, function (users) {
+          return users.age >= 30
+        }),
+        function (user) {
+          return user.name
+        }));
 
 
-console.log(
-  _map(
-    _filter(users,function(users){return users.age >= 30}),_get('name')
-  )
-);
+    console.log(
+      _map(
+        _filter(users, function (users) {
+          return users.age >= 30
+        }), _get('name')
+      )
+    );
 
+    console.clear();
+
+    console.log(
+      _reduce([1, 2, 3, 4], add));
+
+
+    var f1 = _pipe(
+      function (a) {
+        return a + 1;
+      },
+      function (a) {
+        return a * 2
+      },
+      function (a) {
+        return a * a
+      }
+    );
+
+
+    console.log(
+      f1(5)
+    );
+
+
+    _go(1,
+      function (a) {
+        return a + 1;
+      },
+      function (a) {
+        return a * 2
+      },
+      function (a) {
+        return a * a
+      },
+      console.log
+    );
+
+    _go(users,
+      function (users) {
+        return _filter(users, function (user) {
+          return user.age < 30;
+        })
+      },
+      function (users) {
+        return _map(users, _get('name'))
+      },
+      console.log
+    )
+
+    var _map = _curryr(_map),
+      _filter = _curryr(_filter);
+
+    console.log(
+      _map([1, 2, 3], function (val) {
+        return val * 2
+      }));
+
+    console.log(
+      _map(function (val) {
+        return val * 2
+      })([1, 2, 3])
+    );
+
+    console.clear();
+    _go(users,
+      _filter((user) => user.age >= 30),
+      _map(_get('name')),
+      console.log);
+
+    _go(users,
+      _filter((user) => user.age >= 30),
+      _map(_get('age')),
+      console.log);
+
+      
   </script>
 </body>
 
