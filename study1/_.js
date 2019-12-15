@@ -1,3 +1,29 @@
+
+
+// function _length(list) { return list == null ? void 0 : list.length; };
+
+// get
+var _get = _curryr(function(obj,key){
+  return obj == null ? undefined : obj[key];
+});
+var _length = _get('length');
+
+function _keys(obj){
+  return _is_object(obj)? Object.keys(obj) : [];
+}
+function _is_object(obj){
+  return typeof obj == 'object' && !!obj;
+}
+
+
+function _each(list, iter) {
+  var keys = _keys(list); // length 없어도 keys로 뽑아서 동작하게함.
+  for (var i = 0, len = keys.length; i < len ; i++) {
+    iter(list[keys[i]]);
+  }
+  return list;
+}
+
 function _filter(list, predi) {
   var new_list = [];
   _each(list, function (val) {
@@ -14,12 +40,6 @@ function _map(list, mapper) {
   return new_list;
 }
 
-function _each(list, iter) {
-  for (var i = 0; i < list.length; i++) {
-    iter(list[i]);
-  }
-  return list
-}
 
 // 커링
 function _curry(fn) {
@@ -28,16 +48,13 @@ function _curry(fn) {
   }
 }
 
+
 function _curryr(fn){
   return function(a, b){
     return arguments.length === 2 ? fn(a, b) : function (b) { return fn(b, a) };
   }
 }
 
-// get
-var _get = _curryr(function(obj,key){
-  return obj == null ? undefined : obj[key];
-});
 var slice = Array.prototype.slice;
 
 // rest
@@ -73,6 +90,9 @@ function _go(arg){
   return _pipe.apply(null, fns)(arg);
 }
 
+var _map = _curryr(_map);
+var _filter = _curryr(_filter);
 
-
-var _map = _curryr(_map),_filter = _curryr(_filter);
+function _identity(val){
+  return val
+}

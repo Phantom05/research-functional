@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    @font-face {
+      font-family: "Material Icons";
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://example.com/MaterialIcons-Regular.eot);
+      /* For IE6-8 */
+      src: local("Material Icons"), local("MaterialIcons-Regular"),
+        url(https://example.com/MaterialIcons-Regular.woff2) format("woff2"),
+        url(https://example.com/MaterialIcons-Regular.woff) format("woff"),
+        url(https://example.com/MaterialIcons-Regular.ttf) format("truetype");
+    }
+
+    body {
+      font-family: sans-serif;
+    }
+
+    .todo_add_area {
+      margin: 25px 0;
+    }
+
+    .add_input {
+      display: block;
+      width: 60%;
+      height: 30px;
+      border: none;
+      border-bottom: 3px solid #666;
+      margin: 0 auto;
+    }
+
+    .todo:after {
+      display: block;
+      clear: both;
+      content: "";
+    }
+
+    .todo_area {
+      float: left;
+      width: 49%;
+      margin-right: 1%;
+    }
+
+    .title {
+      text-align: center;
+    }
+
+    .todo_list_area {
+      min-height: 100px;
+      padding: 5px 10px;
+      border-radius: 10px;
+    }
+
+    .todo_list_area.pending {
+      background-color: #a6d8c9;
+    }
+
+    .todo_list_area.finished {
+      background-color: #ecb382;
+    }
+
+    .list {
+      padding: 5px 0;
+    }
+
+    .content {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .todo_icons {
+      display: inline;
+      vertical-align: middle;
+      font-size: 18px;
+      padding: 0 2px;
+      border: 1px solid #ececec;
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .todo_icons.redo,
+    .todo_icons.undo {
+      color: green;
+    }
+
+    .todo_icons.clear {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="todo_add_area">
+    <h1 class="title">Add Task</h1>
+    <form action="" class="js-form">
+      <input type="text" class="add_input" placeholder="Add task" />
+    </form>
+  </div>
+  <div class="todo">
+    <div class="todo_area ">
+      <h2 class="title">Pending</h2>
+      <div class="todo_list_area pending">
+        <ul class="todo_list js-ul pending"></ul>
+      </div>
+    </div>
+    <div class="todo_area ">
+      <h2 class="title">Finished</h2>
+      <div class="todo_list_area finished">
+        <ul class="todo_list js-ul finish"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="./main.js"></script>
+  <script>
+    function elm(attr) {
+      const elmList = Array.prototype.slice.call(
+        document.querySelectorAll(attr),
+        0
+      );
+      if (elmList.length === 1) {
+        return elmList[0];
+      } else if (elmList.length > 1) {
+        return elmList;
+      }
+      return null;
+    }
+    function elt(name, attributes) {
+      var node = document.createElement(name);
+      if (attributes && typeof attributes !== "string") {
+        for (var attr in attributes) {
+          if (attributes.hasOwnProperty(attr)) {
+            node.setAttribute(attr, attributes[attr]);
+          }
+        }
+      }
+      for (var i = 2; i < arguments.length; i++) {
+        var child = arguments[i];
+        if (typeof child === "string") {
+          child = document.createTextNode(child);
+        }
+        node.append(child);
+      }
+      return node;
+    }
+    const Storage = (function(){
+      function Storage(){}
+      Storage.__proto__.get = function(name){
+        return JSON.parse(localStorage.getItem(name))
+      }
+      Storage.__proto__.set = function(name,value){
+        return localStorage.setItem(name,JSON.stringify(value))
+      }
+      Storage.__proto__.del = function(id,value){
+        return localStorage.removeItem(id)
+      }
+      return Storage
+    })();
+    Element.prototype.remove = function () {
+      this.parentElement.removeChild(this);
+    }
+
+    const form = elm(".js-form");
+    const input = elm("input");
+    const todoArea = elm(".todo_area");
+    const pending = elm(".pending");
+    const finished = elm(".finished");
+    const pendingList = elm(".js-ul.pending");
+    const finishedList = elm(".js-ul.finish");
+
+    const PENDING_LS = "PENDING";
+    const FINISHED_LS = "FINISHED";
+
+    let toDoPending = [];
+    let toDoFinished = [];
+
+    // loadedSetting(FINISHED_LS,toDoPending)
+    // loadedSetting(PENDING_LS,toDoFinished)
+
+    Storage.set(PENDING_LS,[]);
+    Storage.set(FINISHED_LS,[]);
+    
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const {value} = input;
+      InsertItem({
+        value:input.value,
+        targetList:pendingList,
+        nextList:finishedList,
+        storageTodo:PENDING_LS,
+        storageNext:FINISHED_LS
+      });
+      input.value= ''
+      // paintToDo(input.value, toDoPending);
+      // input.value = '';
+    });
+
+
+
+    function InsertItem(config){
+      const {
+        value,
+        targetList,
+        nextList,
+        storageTodo,
+        storageNext} = config;
+      const {
+        redoBtn,
+        deleteBtn,
+        li} = makeTemplate(value);
+      const todoStorage = Storage.get(storageTodo);
+      const todoId = todoStorage.length;
+      const saveConfig ={id:todoId,value};
+      let new_list = todoStorage.concat(saveConfig)
+      Storage.set(storageTodo,new_list);
+
+      targetList.append(li);
+      li.id = todoId;
+      deleteBtn.id = todoId;
+      redoBtn.id = todoId;
+
+      deleteBtn.addEventListener('click',(e)=>{
+        // delete storage
+        const delId = e.currentTarget.id;
+        const replaceStoragArray = Storage.get(storageTodo).filter(info=>info.id !== +delId);
+        Storage.set(storageTodo,replaceStoragArray);
+
+        // delete view list 
+        [...targetList.children].filter(info => info.id === delId)[0].remove();
+      });
+
+
+      const nextStorage = Storage.get(storageNext);
+      // const nextId = nextStorage.length;
+
+      redoBtn.addEventListener('click',(e)=>{
+        // move item
+        const nStorage = Storage.get(storageNext);
+        const redoId = e.currentTarget.id;
+        const redoStorageTarget = Storage.get(storageTodo).filter(info=>info.id === +redoId);
+    
+        const newItem = redoStorageTarget[0];
+        newItem.id = nStorage.length;
+        const new_list = Storage.get(storageNext).concat(newItem);
+        Storage.set(storageNext,new_list);
+        const paintConfig = {
+          target:nextList,
+          list:Storage.get(storageNext)
+        }
+        Object.assign(paintConfig,config)
+        paintList(paintConfig);
+
+        //todo re setting
+        let reSetTodoList = Storage.get(storageTodo).filter(info => info.id !== +redoId);
+        Storage.set(storageTodo,reSetTodoList)
+
+        // delete item
+        ;[...targetList.children].filter(info => info.id === redoId)[0].remove();
+      })
+    }
+
+
+    function paintList(config){
+      const {
+        target,
+        list,
+        value,
+        targetList,
+        nextList,
+        storageTodo,
+        storageNext
+      } = config;
+      
+      target.innerHTML = '';
+      list.map(({id,value},todoId)=>{
+        const {
+        redoBtn,
+        deleteBtn,
+        li} = makeTemplate(value);
+
+        target.append(li);
+        li.id = todoId;
+        deleteBtn.id = todoId;
+        redoBtn.id = todoId;
+
+        deleteBtn.addEventListener('click',(e)=>{
+          // delete storage
+          const delId = e.currentTarget.id;
+          const replaceStoragArray = Storage.get(storageNext).filter(info=>info.id !== +delId);
+          Storage.set(storageNext,replaceStoragArray);
+
+          // delete view list 
+          [...nextList.children].filter(info => info.id === delId)[0].remove();
+      });
+
+      })
+    }
+
+    function makeTemplate(text) {
+      const span = elt("span", {class: 'content'}, text);
+      const redoBtn = makeBtn("redo");
+      const deleteBtn = makeBtn("clear");
+      const li = elt("li", {class: 'list'},span,redoBtn,deleteBtn);
+      return {
+        li,redoBtn,deleteBtn
+      }
+    }
+
+    function makeBtn(name) {
+      const innerIcon = elt('i', {class: "material-icons"}, name);
+      return elt('button', {class: `todo_icons ${name}`}, innerIcon);
+    }
+
+
+    // function loadedSetting(type,arr) {
+    //   const loadedList = localStorage.getItem(type);
+    //   if (loadedList !== null) {
+    //     const parsedList = JSON.parse(loadedList);
+    //     parsedList.forEach(list => {
+    //       if (type === 'PENDING') {
+    //         paintToDo(list.text,arr);
+    //       } else if (type === 'FINISHED') {
+    //         paintFinish(list.text,arr);
+    //       }
+    //     });
+    //   }
+    // }
+
+
+
+
+    // InsertItem(pendingList);
+    // InsertItem(finishedList);
+
+        
+    // function InsertTodoData(type) {
+    //   const List = type === 'PENDING'? toDoPending : type === 'FINISHED'?toDoFinished :null;
+    //   localStorage.setItem(type,JSON.stringify(List))
+    // }
+
+
+
+
+    // function deleteList(event) {
+    //   const btn = event.currentTarget;
+    //   const li = btn.parentNode;
+    //   const ul = li.parentNode;
+    //   ul.removeChild(li);
+    // }
+
+    // function changeFinish(event) {
+    //   const btn = event.currentTarget;
+    //   const li = btn.parentNode;
+    //   const ul = li.parentNode;
+
+    //   let finishedsorkLen = JSON.parse(localStorage.getItem('FINISHED')).length;
+
+    //   console.log(finishedLen);
+      
+
+    //   toDoPending.filter(list => {
+    //     if (list.id === +li.id) {
+    //       toDoFinished.push(list);
+    //       paintFinish(list.text);
+    //       InsertTodoData(FINISHED_LS)
+    //     }
+    //   });
+
+    //   ul.removeChild(li);
+    //   const cleanToDos = toDoPending.filter(list => list.id !== +li.id);
+    //   toDoPending = cleanToDos;
+    //   InsertTodoData(PENDING_LS);
+    // }
+
+
+    
+
+    // function paintToDo(text, arr) {
+    //   const {redoBtn,deleteBtn,li} = makeTemplate(text);
+    //   const newId = arr.length;
+
+    //   redoBtn.addEventListener("click", changeFinish);
+    //   deleteBtn.addEventListener("click", event => {
+    //     deleteList(event);
+    //     const cleanToDos = arr.filter(list => {
+    //       return list.id !== +li.id;
+    //     });
+    //     arr = cleanToDos;
+    //     InsertTodoData(PENDING_LS);
+    //   });
+    //   pendingList.appendChild(li);
+
+    //   const listObj = {
+    //     id: newId,
+    //     text: text
+    //   };
+    //   li.id = newId;
+
+    //   arr.push(listObj);
+    //   InsertTodoData(PENDING_LS);
+    // }
+
+    // function paintFinish(text) {
+    //   const li = elt('li', {class: 'list'});
+    //   const span = elt('span', {class: "content"}, text)
+    //   const sendPendinghBtn = makeBtn("undo");
+    //   const deleteBtn = makeBtn("clear");
+
+    //   deleteBtn.addEventListener("click", event => {
+    //     deleteList(event);
+    //     const cleanToDos = toDoFinished.filter(list => {
+    //       return list.id !== +li.id;
+    //     });
+    //     toDoFinished = cleanToDos;
+    //     InsertTodoData(FINISHED_LS)
+    //   });
+
+    //   li.append(span,
+    //     sendPendinghBtn,
+    //     deleteBtn);
+    //   finishedList.appendChild(li);
+    // }
+
+
+  </script>
+</body>
+
+</html>

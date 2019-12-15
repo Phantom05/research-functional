@@ -456,6 +456,7 @@
     );
 
     console.clear();
+
     _go(users,
       _filter((user) => user.age >= 30),
       _map(_get('name')),
@@ -466,7 +467,113 @@
       _map(_get('age')),
       console.log);
 
+
+    var a = _go(users,
+      _filter(user=>user.age > 30)
+    );
+    console.log(a);
+
+    var test = (a,b) =>({val:1});
+    console.log(
+      test()
+    );
       
+    _each(null,console.log);
+    console.log(
+      _filter(null,function(v){return v;})
+    );
+
+    _go([1,2,3,4],
+    _filter(function(v){return v % 2;}),
+      _map(function(v){return v * v;}),
+      console.log
+    );
+
+
+    console.log(
+      Object.keys({name:'ID',age:33})
+    );
+
+    _go([1,2,3,4],
+    console.log);
+
+
+    console.log(
+      _keys(null)
+    );
+    console.log(
+      _keys({valle:'worl'})
+    );
+
+    _each({
+      13:"ID",
+      19:"HD",
+      29:"YD"
+    },function(name){
+      console.log(name);
+    });
+
+    console.log(
+        _each({
+        13:"ID",
+        19:"HD",
+        29:"YD"
+      },function(name){
+        return name.toLowerCase();
+      })
+    );
+
+    _go({
+      13:"ID",
+      19:"HD",
+      29:"YD"
+    },
+    _map(function(name){
+      return name.toLowerCase()
+    }),
+    console.log
+    );
+
+    console.clear();
+    _go({
+      1:users[0],
+      3:users[2],
+      5:users[4],
+    },
+    _map(function(user){
+      console.log(user);
+      return user.name.toLowerCase();
+    }),
+    console.log
+    )
+
+    
+    // 컬렉션 중심 프로그래밍
+    console.log(
+      _map(users,function(user){
+        return user.name
+      })
+    );
+
+    function _values(data){
+      return _map(data,_identity)
+    };
+
+    console.log(
+      _keys(users[0])
+    );
+    console.log(
+      _values(users[0])
+    );
+
+    var a = 10;
+    console.log(
+      _identity(a)
+    );
+
+
+    
+
   </script>
 </body>
 
