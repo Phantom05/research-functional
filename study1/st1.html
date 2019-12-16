@@ -623,17 +623,20 @@
     console.log);
 
   console.log(
-    _some([1,2,5,10,20],function(val){
-    return val > 10;
-  })
+    _some([null,false,0])
   );
   console.log(
-    _every([1,2,5,10,20],function(val){
-    return val > 0;
-  })
+    _every([1,2,5,10,20])
   );
-
+  console.log(
+    _every([1,2,5,10,false])
+  );
     
+  console.log(
+    _some(users,function(user){
+      return user.age > 20;
+    })
+  )
     
 
   </script>

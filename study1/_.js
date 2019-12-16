@@ -132,9 +132,9 @@ var _find_index = _curryr(function (list, predi) {
 });
 
 function _some(data,predi){
-  return _find_index(data,predi) != -1;
+  return _find_index(data,predi || _identity) != -1;
 }
 
 function _every(data,predi){
-  return _find_index(data,_negate(predi)) == -1;
+  return _find_index(data,_negate(predi || _identity)) == -1;
 }
