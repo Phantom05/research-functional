@@ -571,7 +571,69 @@
       _identity(a)
     );
 
+    console.log(
+      _map(_identity)(users[0])
+    );
 
+    console.log(
+      _pluck(users,'age')
+    );
+    console.log(
+      _pluck(users,'name')
+    );
+
+    console.log(
+      _reject(users,function(user){
+        return user.age > 30
+      })
+    );
+
+    console.log(
+      _compact([1,2,0,false,null,{}])
+    );
+
+
+
+
+   _go({
+      13:"ID",
+      19:"HD",
+      29:"YD"
+    },
+    _filter(name=>name === 'HD'),
+    _map(item=>item+' WORLD'),
+    console.log);
+
+
+    console.log(
+      _find_index(users,function(user){
+      return user.id == 3
+    })
+    );
+
+    console.log(
+    _get(_find(users,function(user){
+      return user.name == 'BJ'
+    }),'name')
+   );
+
+   _go(users,
+    _find(function(user){return user.id == 5}),
+    _get('age'),
+    console.log);
+
+  console.log(
+    _some([1,2,5,10,20],function(val){
+    return val > 10;
+  })
+  );
+  console.log(
+    _every([1,2,5,10,20],function(val){
+    return val > 0;
+  })
+  );
+
+    
     
 
   </script>

@@ -94,5 +94,47 @@ var _map = _curryr(_map);
 var _filter = _curryr(_filter);
 
 function _identity(val){
-  return val
+  return val;
+}
+
+function _pluck(data,key){
+  return _map(data,_get(key));
+};
+
+function _negate(fn){
+  return function(val){
+    return !fn(val)
+  }
+}
+
+function _reject(data,predi){
+  return _filter(data,_negate(predi))
+}
+
+function _compact(data){
+  return _filter(data,_identity)
+}
+
+var _find = _curryr(function (list, predi) {
+  var keys = _keys(list); 
+  for (var i = 0, len = keys.length; i < len ; i++) {
+    const val = list[keys[i]];
+    if(predi(val)) return val;
+  }
+})
+
+var _find_index = _curryr(function (list, predi) {
+  var keys = _keys(list); 
+  for (var i = 0, len = keys.length; i < len ; i++) {
+    if(predi(list[keys[i]])) return i;
+  }
+  return -1;
+});
+
+function _some(data,predi){
+  return _find_index(data,predi) != -1;
+}
+
+function _every(data,predi){
+  return _find_index(data,_negate(predi)) == -1;
 }
