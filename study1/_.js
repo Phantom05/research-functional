@@ -15,7 +15,6 @@ function _is_object(obj){
   return typeof obj == 'object' && !!obj;
 }
 
-
 function _each(list, iter) {
   var keys = _keys(list); // length 없어도 keys로 뽑아서 동작하게함.
   for (var i = 0, len = keys.length; i < len ; i++) {
@@ -40,14 +39,12 @@ function _map(list, mapper) {
   return new_list;
 }
 
-
 // 커링
 function _curry(fn) {
   return function (a, b) {
     return arguments.length === 2 ? fn(a, b) : function (b) { return fn(a, b) };
   }
 }
-
 
 function _curryr(fn){
   return function(a, b){
@@ -107,9 +104,9 @@ function _negate(fn){
   }
 }
 
-function _reject(data,predi){
+var _reject = _curryr(function (data,predi){
   return _filter(data,_negate(predi))
-}
+});
 
 function _compact(data){
   return _filter(data,_identity)
@@ -138,3 +135,56 @@ function _some(data,predi){
 function _every(data,predi){
   return _find_index(data,_negate(predi || _identity)) == -1;
 }
+
+function _min(data){
+  return _reduce(data,function(a,b){
+    return a < b ? a:b;
+  })
+}
+function _max(data){
+  return _reduce(data,function(a,b){
+    return a > b ? a:b;
+  })
+}
+
+var _min_by = _curryr(function (data,iter){
+  return _reduce(data,function(a,b){
+    return iter(a) < iter(b) ? a:b;
+  })
+})
+
+var _max_by = _curryr(function (data,iter){
+  return _reduce(data,function(a,b){
+    return iter(a) >  iter(b) ? a:b;
+  })
+})
+
+function _push(obj,key,val){
+  (obj[key] = obj[key] || []).push(val);
+  return obj;
+}
+
+var _group_by = _curryr(function(data,iter){
+  return _reduce(data,function(grouped,val){
+    return _push(grouped,iter(val),val);
+  },{})
+});
+
+var _head = function(list){
+  return list[0];
+};
+
+var _inc = function(count,key){
+  count[key] ? count[key]++ : count[key] = 1;
+  return count;
+}
+
+var _count_by = _curryr(function(data,iter){
+  return _reduce(data,function(count,val){
+    return _inc(count,iter(val));
+  },{});
+});
+
+
+// 뭔가 문제를 풀때 이런식으로 함수를 만들어서 풀기. 필요한 데이터를 가공할떄.
+// 그리고 화면에 보여줄거면 MVC 패턴을 이용해서 그리기

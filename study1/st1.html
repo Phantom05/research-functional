@@ -10,8 +10,10 @@
 
 <body>
 
+  <!-- <script src="./main.js"></script> -->
   <script src="./_.js"></script>
-  <script>
+  <script src="./partial.js"></script>
+  <!-- <script>
     // 순수함수
     function add(a, b) {
       return a + b;
@@ -638,6 +640,159 @@
     })
   )
     
+  console.log(
+    _min([5,1,2,4,10,5,-4])
+  );
+  console.log(
+    _max([5,1,2,4,10,5,-4])
+  );
+
+  console.log(
+    _min_by([1,2,4,10,5,-4],Math.abs)
+  );
+
+  console.log(
+    _max_by([1,2,4,10,5,-4],Math.abs)
+  );
+
+
+  function form(...elm){
+    const form  = elt("form",{action:"/ab"});
+    form.append(...elm);
+    return form
+  } 
+
+  const Form  =_curry(form);
+  console.log(
+    Form(
+      elt("input",{type:"text"}),
+      // elt("input",{type:"text"}),
+      elt("button",{type:'submit'}),
+    )
+  );
+
+
+
+  var _min_by = _curryr(_min_by);
+  var _max_by = _curryr(_max_by);
+
+  console.log(
+    _min_by(users,function(user){
+      return user.age;
+    })
+  );
+
+  _go(users,
+    _filter(user=>user.age>=30),
+    _min_by(function(user){
+      return user.age
+    }),
+    console.log);
+
+  _go(users,
+    _reject(user=>user.age >= 30),
+    _max_by(_get('age')),
+    console.log
+  )
+
+
+  console.log(_map);
+  </script> -->
+
+  <script>
+    var users = [{
+        id: 1,
+        name: "ID",
+        age: 36
+      },
+      {
+        id: 2,
+        name: "BJ",
+        age: 32
+      },
+      {
+        id: 3,
+        name: "JM",
+        age: 32
+      },
+      {
+        id: 4,
+        name: "PJ",
+        age: 27
+      },
+      {
+        id: 5,
+        name: "HA",
+        age: 25
+      },
+      {
+        id: 6,
+        name: "JE",
+        age: 26
+      },
+      {
+        id: 7,
+        name: "JI",
+        age: 31
+      },
+      {
+        id: 8,
+        name: "MP",
+        age: 23
+      },
+    ];
+
+    _.go(users,
+      _.map(user => ({...user,age:user.age+10})),
+      _.filter(user=> user.age >= 30),
+      _.pipe(
+        _.map(user=>({...user,age:user.age+20})),
+        _.filter(user => user.age <=60)
+      ),
+      console.log);
+
+ 
+
+
+    _go(users,
+      _filter(user=>user.age >=30),
+      _min_by(_get('age')),
+      console.log);
+    
+    
+    console.clear()
+    _go(users,
+      _group_by(function(user){
+          return user.age;
+      }),
+      console.log)
+
+    _go(users,
+      _group_by(function(user){
+          return user.age - user.age % 10;
+      }),
+      console.log);
+
+
+    _go(users,
+      _group_by(function(user){
+          return user.name[0]
+      }),
+      console.log)
+
+    _go(users,
+      _group_by(_pipe(_get('name'),_head)),
+      
+      console.log);
+
+    
+
+      console.log(
+        _count_by(users,function(user){
+          return user.age - user.age % 10;
+        })
+      );
+
 
   </script>
 </body>
