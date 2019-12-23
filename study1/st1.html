@@ -748,108 +748,169 @@
     ];
 
     _.go(users,
-      _.map(user => ({...user,age:user.age+10})),
-      _.filter(user=> user.age >= 30),
+      _.map(user => ({
+        ...user,
+        age: user.age + 10
+      })),
+      _.filter(user => user.age >= 30),
       _.pipe(
-        _.map(user=>({...user,age:user.age+20})),
-        _.filter(user => user.age <=60)
+        _.map(user => ({
+          ...user,
+          age: user.age + 20
+        })),
+        _.filter(user => user.age <= 60)
       ),
       console.log);
 
- 
+
 
 
     _go(users,
-      _filter(user=>user.age >=30),
+      _filter(user => user.age >= 30),
       _min_by(_get('age')),
       console.log);
-    
-    
+
+
     console.clear()
     _go(users,
-      _group_by(function(user){
-          return user.age;
+      _group_by(function (user) {
+        return user.age;
       }),
       console.log)
 
     _go(users,
-      _group_by(function(user){
-          return user.age - user.age % 10;
+      _group_by(function (user) {
+        return user.age - user.age % 10;
       }),
       console.log);
 
 
     _go(users,
-      _group_by(function(user){
-          return user.name[0]
+      _group_by(function (user) {
+        return user.name[0]
       }),
       console.log)
 
     _go(users,
-      _group_by(_pipe(_get('name'),_head)),
+      _group_by(_pipe(_get('name'), _head)),
       console.log);
-      console.log(
-        _count_by(users,function(user){
-          return user.age - user.age % 10;
-        })
-      );
+    console.log(
+      _count_by(users, function (user) {
+        return user.age - user.age % 10;
+      })
+    );
 
-      // _map(users,function(val,key){
-      //     console.log(key);
-      // });
+    // _map(users,function(val,key){
+    //     console.log(key);
+    // });
 
 
-      console.log(
-        _pairs(users[0])
-      );
-      console.clear();
+    console.log(
+      _pairs(users[0])
+    );
+    console.clear();
 
-      console.log(users);
+    console.log(users);
 
-      _go(users,
-        _group_by(function(user){
-          return user.name[0]
-        }),
+    _go(users,
+      _group_by(function (user) {
+        return user.name[0]
+      }),
       console.log);
 
-      console.clear();
+    console.clear();
 
-      console.log(
-        _map([1,2,3],function(val,key){
-          return [key, val]
-        })
-      );
-
-      
-      console.log(users);
-      // _go(users,
-      //  _filter(user => user.age < 30),
-      //   _count_by((user)=> user.age - user.age %10),
-      //   _map((count,key) => `<li>${key}대는 ${count}명 입니다.</li>`),
-      //   list=>`<ul>${list.join('')}</ul>`,
-      // document.write.bind(document)
-      // )
+    console.log(
+      _map([1, 2, 3], function (val, key) {
+        return [key, val]
+      })
+    );
 
 
-        var f1 = _pipe(
-            _filter(user => user.age < 30),
-            _count_by((user)=> user.age - user.age %10),
-            _map((count,key) => `<li>${key}대는 ${count}명 입니다.</li>`),
-            list=>`<ul>${list.join('')}</ul>`,
-            document.write.bind(document)
-        );
-
-        f1(users);
-
-        var f2 = _pipe(
-          _reject(user => user.age < 30),f1
-        );
-
-        f2(users)
-      
-  
+    console.log(users);
+    // _go(users,
+    //  _filter(user => user.age < 30),
+    //   _count_by((user)=> user.age - user.age %10),
+    //   _map((count,key) => `<li>${key}대는 ${count}명 입니다.</li>`),
+    //   list=>`<ul>${list.join('')}</ul>`,
+    // document.write.bind(document)
+    // )
 
 
+    var f1 = _pipe(
+      _filter(user => user.age < 30),
+      _count_by((user) => user.age - user.age % 10),
+      _map((count, key) => `<li>${key}대는 ${count}명 입니다.</li>`),
+      list => `<ul>${list.join('')}</ul>`,
+      document.write.bind(document)
+    );
+
+    f1(users);
+
+    var f2 = _pipe(
+      _reject(user => user.age < 30), f1
+    );
+
+    f2(users);
+
+
+    function solution(n) {
+      const res = [];
+      while (true) {
+        res.push(n % 10);
+        n = Math.floor(n / 10);
+        if (n === 0) break;
+      }
+      return res
+    }
+
+    console.log(
+      solution(12345)
+    );
+
+    console.clear();
+  </script>
+
+  <script>
+    var mi = 0;
+    var fi = 0;
+    _.go(
+      _.range(100),
+      _.map(function (val) {
+        ++mi;
+        return val * val
+      }),
+      _.filter(function (val) {
+        ++fi;
+        return val % 2;
+      }),
+
+      _.take(5),
+      console.log
+    );
+    console.log(mi, fi);
+
+
+    var mi = 0;
+    var fi = 0;
+    _.go(
+      _.range(100),
+      L.map(function (val) {
+        ++mi;
+        return val * val
+      }),
+      L.filter(function (val) {
+        ++fi;
+        return val % 2;
+      }),
+
+      L.take(5),
+      console.log
+    );
+
+
+
+    console.log(mi, fi);
   </script>
 </body>
 
