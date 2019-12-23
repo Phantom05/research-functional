@@ -18,7 +18,7 @@ function _is_object(obj){
 function _each(list, iter) {
   var keys = _keys(list); // length 없어도 keys로 뽑아서 동작하게함.
   for (var i = 0, len = keys.length; i < len ; i++) {
-    iter(list[keys[i]]);
+    iter(list[keys[i]],keys[i]);
   }
   return list;
 }
@@ -33,8 +33,8 @@ function _filter(list, predi) {
 
 function _map(list, mapper) {
   var new_list = [];
-  _each(list, function (val) {
-    new_list.push(mapper(val))
+  _each(list, function (val,key) {
+    new_list.push(mapper(val,key))
   });
   return new_list;
 }
@@ -185,6 +185,7 @@ var _count_by = _curryr(function(data,iter){
   },{});
 });
 
+var _pairs = _map((val,key)=> [key,val]);
 
 // 뭔가 문제를 풀때 이런식으로 함수를 만들어서 풀기. 필요한 데이터를 가공할떄.
 // 그리고 화면에 보여줄거면 MVC 패턴을 이용해서 그리기
