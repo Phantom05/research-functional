@@ -740,6 +740,11 @@
         name: "MP",
         age: 23
       },
+      {
+        id: 9,
+        name: "GE",
+        age: 11
+      },
     ];
 
     _.go(users,
@@ -782,19 +787,12 @@
 
     _go(users,
       _group_by(_pipe(_get('name'),_head)),
-      
       console.log);
-
-    
-
       console.log(
         _count_by(users,function(user){
           return user.age - user.age % 10;
         })
       );
-
-
-      
 
       // _map(users,function(val,key){
       //     console.log(key);
@@ -804,6 +802,52 @@
       console.log(
         _pairs(users[0])
       );
+      console.clear();
+
+      console.log(users);
+
+      _go(users,
+        _group_by(function(user){
+          return user.name[0]
+        }),
+      console.log);
+
+      console.clear();
+
+      console.log(
+        _map([1,2,3],function(val,key){
+          return [key, val]
+        })
+      );
+
+      
+      console.log(users);
+      // _go(users,
+      //  _filter(user => user.age < 30),
+      //   _count_by((user)=> user.age - user.age %10),
+      //   _map((count,key) => `<li>${key}대는 ${count}명 입니다.</li>`),
+      //   list=>`<ul>${list.join('')}</ul>`,
+      // document.write.bind(document)
+      // )
+
+
+        var f1 = _pipe(
+            _filter(user => user.age < 30),
+            _count_by((user)=> user.age - user.age %10),
+            _map((count,key) => `<li>${key}대는 ${count}명 입니다.</li>`),
+            list=>`<ul>${list.join('')}</ul>`,
+            document.write.bind(document)
+        );
+
+        f1(users);
+
+        var f2 = _pipe(
+          _reject(user => user.age < 30),f1
+        );
+
+        f2(users)
+      
+  
 
 
   </script>
