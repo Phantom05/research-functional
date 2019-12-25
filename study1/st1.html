@@ -911,6 +911,21 @@
 
 
     console.log(mi, fi);
+    function solution(participant, completion) {
+      const objFromArray = completion.reduce(
+        (obj, v)=> (obj[v]= obj[v] ? obj[v]+1 : 1 , obj) 
+      ,{});
+      return participant.find(v=> {
+          if(objFromArray[v]) objFromArray[v] = objFromArray[v]-1;
+          else return true;
+      });
+    }
+    console.log(
+      solution(
+        ["mislav", "stanko", "mislav", "ana"],	["stanko", "ana", "mislav"]
+      )
+    );
+    console.clear()
   </script>
 </body>
 
