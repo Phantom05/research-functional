@@ -1363,6 +1363,92 @@
       console.log(comments);
     
 
+      console.clear();
+      var products =[
+        {
+          is_selected:true,
+          name:"반팔티",
+          price:10000,
+          sizes:[
+            {name:"L",quantity:2,price:0},
+            {name:"XL",quantity:3,price:0},
+            {name:"2XL",quantity:2,price:2000},
+          ]
+        },
+        {
+          is_selected:true,
+          name:"후드티",
+          price:21000,
+          sizes:[
+            {name:"L",quantity:3,price:-1000},
+            {name:"2XL",quantity:10,price:2000},
+          ]
+        },
+        {
+          is_selected:false,
+          name:"맨투맨",
+          price:16000,
+          sizes:[
+            {name:"L",quantity:4,price:0},
+          ]
+        },
+
+      ];
+
+      var total_quantity = _.reduce(function(tq,product){
+          return _.reduce(product.sizes,(tq,size)=>tq+ size.quantity,tq)
+        },0);
+
+      // 모든 수량
+      _.go(products,
+        total_quantity,
+        console.log
+      )
+
+      // 선택 된 총 수량
+      _.go(products,
+      _.filter(_get('is_selected')),
+        total_quantity,
+        console.log
+      );
+
+      // 모든 가격
+      _.go(products,
+        _.reduce(function(tp,product){
+          return _.reduce(product.sizes,function(tp,size){
+            return tp + (product.price + size.price) * size.quantity
+          },tp)
+        },0),
+        console.log);
+
+      // 선택 된 총 가격
+
+      
+      function square(a){
+        return new Promise(function(resolve){
+          setTimeout(() => {
+            resolve(a*a);
+          }, 500);
+        })
+      }
+
+      var list = [2,3,4];
+      new Promise(function(resolve){
+        (function recur(res){
+          if(list.length == res.length) return resolve(res);
+          square(list[res.length]).then(function(val){
+            res.push(val);
+            recur(res);
+          });
+        })([])
+      }).then(console.log);
+
+      
+      _.go(list,
+        _.map(square),
+        _.map(square),
+        console.log)
+
 
 
   </script>
