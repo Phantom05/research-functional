@@ -1140,34 +1140,14 @@
     console.clear();
 
 
-    var users = [{
-        id: 101,
-        name: "ID"
-      },
-      {
-        id: 102,
-        name: "BJ"
-      },
-      {
-        id: 103,
-        name: "PJ"
-      },
-      {
-        id: 104,
-        name: "HA"
-      },
-      {
-        id: 105,
-        name: "JE"
-      },
-      {
-        id: 106,
-        name: "JI"
-      },
-      {
-        id: 109,
-        name: "EK"
-      },
+    var users = [
+      {id: 101,name: "ID"},
+      {id: 102,name: "BJ"},
+      {id: 103,name: "PJ"},
+      {id: 104,name: "HA"},
+      {id: 105,name: "JE"},
+      {id: 106,name: "JI"},
+      {id: 109,name: "EK"},
     ]
     var posts = [{
         id: 201,
@@ -1177,7 +1157,7 @@
       {
         id: 202,
         body: "내용2",
-        user_id: 101
+        user_id: 102
       },
       {
         id: 203,
@@ -1187,7 +1167,7 @@
       {
         id: 204,
         body: "내용4",
-        user_id: 104
+        user_id: 102
       },
       {
         id: 205,
@@ -1198,62 +1178,62 @@
     var comments = [{
         id: 300,
         body: "댓글0",
-        user_id: 104,
-        post_id: 200
+        user_id: 105,
+        post_id: 201
       },
       {
         id: 301,
         body: "댓글1",
-        user_id: 105,
+        user_id: 104,
         post_id: 201
       },
       {
         id: 302,
         body: "댓글2",
-        user_id: 106,
+        user_id: 104,
         post_id: 202
       },
       {
         id: 303,
         body: "댓글3",
-        user_id: 107,
+        user_id: 105,
         post_id: 203
       },
       {
         id: 304,
         body: "댓글4",
-        user_id: 108,
-        post_id: 204
+        user_id: 106,
+        post_id: 203
       },
       {
         id: 305,
         body: "댓글5",
-        user_id: 109,
-        post_id: 205
+        user_id: 106,
+        post_id: 204
       },
       {
         id: 306,
         body: "댓글6",
-        user_id: 101,
-        post_id: 206
+        user_id: 102,
+        post_id: 205
       },
       {
         id: 307,
         body: "댓글7",
-        user_id: 102,
-        post_id: 207
+        user_id: 103,
+        post_id: 204
       },
       {
         id: 308,
         body: "댓글8",
         user_id: 103,
-        post_id: 208
+        post_id: 202
       },
       {
         id: 309,
         body: "댓글9",
-        user_id: 104,
-        post_id: 209
+        user_id: 105,
+        post_id: 201
       },
     ];
 
@@ -1298,6 +1278,93 @@
     console.log( f3({user_id:101}) );
 
     
+
+    // 4. 특정인이 comments를 단 posts 거르기
+    _.go(
+      _.where(comments,{user_id:105}),
+      _.pluck('post_id'),
+      _.uniq,
+      function(post_ids){
+        return _.filter(posts,function(post){
+          return _.contains(post_ids,post.id)
+        })
+      },
+      console.log
+    );
+
+    console.clear();
+    // 5. users + post + comments (index_by와 group_by로 효율 높이기)
+
+    var users2 = _.index_by(users,'id');
+    // console.log(users2); // 이렇게되면 id만 찾으면 id로 인덱싱 되어있어서 users2[101]이런식으로 찾을 수 있음. 해싱 처리 할수있음.
+
+    function find_user_by_id(user_id){
+      return _.find(users,function(user){
+          return users2[user_id]
+        })
+    }
+
+    var comments2= _.go(
+      comments,
+      _.map(function(comment){
+      return _.extend({
+        user:find_user_by_id(comment.user_id)
+      },comment);
+    }),
+    _.group_by('post_id')
+    );
+
+
+
+    var posts2 = _.go(
+        posts,
+        _.map(function(post){
+        return _.extend({
+          comments:comments2[post.id],
+          user:find_user_by_id(post.user_id)
+        },post);
+      }),
+      _.group_by('user_id')
+    );
+
+    var users3 = _.map(users2,function(user){
+      return _.extend({
+        posts:_.filter(posts2,function(post){
+          return post.user_id == user.id
+        })
+      },user)
+    });
+    console.log(users3);
+
+    var users3 = _.map(users2,function(user){
+      return _.extend({
+        posts:posts2[user.id] || []
+      },user)
+    });
+
+    console.log(posts2);
+    console.log(users3);
+
+    console.clear();
+    // 5.1 특정인의 posts의 모든 comments 거르기
+    var user = users3[2];
+    console.log(user);
+    _.go(user.posts,
+      _.pluck('comments'),
+      _.flatten,
+      console.log);
+
+    _.go(user,
+      _.deep_pluck('posts.comments'),
+      _.flatten,
+      console.log);
+
+      // console.log(_.pluck(comments,'id'));
+      console.log(comments);
+    
+
+
+
   </script>
 </body>
 
