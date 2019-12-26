@@ -911,21 +911,393 @@
 
 
     console.log(mi, fi);
+
+
+
+    // function solution(participant, completion) {
+    //   const map = new Map();
+
+    //   const obj = participant.reduce((obj, item) => {
+    //     if (obj.hasOwnProperty(item)) {
+    //       obj[item]++
+    //     } else {
+    //       obj[item] = 1;
+    //     }
+    //     return obj;
+    //   }, {});
+    //   const res = completion.map(item => {
+    //     if(obj[item] === 1){
+    //       delete obj[item]
+    //     }else if (obj[item] === 2){
+    //       obj[item]--
+    //     }
+    //   });
+
+    //   return Object.keys(obj)[0]
+    // }
+
+
+
+    console.log(mi, fi);
+
     function solution(participant, completion) {
       const objFromArray = completion.reduce(
-        (obj, v)=> (obj[v]= obj[v] ? obj[v]+1 : 1 , obj) 
-      ,{});
-      return participant.find(v=> {
-          if(objFromArray[v]) objFromArray[v] = objFromArray[v]-1;
-          else return true;
+        (obj, v) => (obj[v] = obj[v] ? obj[v] + 1 : 1, obj), {});
+      return participant.find(v => {
+        if (objFromArray[v]) objFromArray[v] = objFromArray[v] - 1;
+        else return true;
       });
     }
+
+
+
+    // console.log(
+    //   solution(
+    //     ["mislav", "stanko", "mislav", "ana"], ["stanko", "ana", "mislav"]
+    //   )
+    // );
+
+
+    function _each(list, iter) {
+      for (var i = 0, len = list.length; i < len; i++) {
+        iter(list[i], i);
+      }
+      return list;
+    }
+
+    // function solution(participant, completion) {
+    //   const map = new Map();
+    //   _each(participant, (item,idx) => {
+    //     const b = completion[idx];
+    //     map.set(item, (map.get(item) || 0) + 1);
+    //     map.set(b, (map.get(b) || 0) - 1)
+    //   });
+
+    //   for(let [a,b] of map){
+    //     if(b >0) return a
+    //   }
+    // }
+
+    console.clear();
+
+    //     function solution(clothes) {
+    //     let answer = 1;
+
+    //     // 의상의 종류별 개수를 담을 맵 (ex. headgear 2가지, face 1가지 등)
+    //     let map = new Map();
+
+    //     // for문을 순회하면서 의상의 종류별 개수를 맵에 저장
+    //     let size = clothes.length;
+    //     for (let i = 0; i < size; i++) {
+
+    //         if (!map.has(clothes[i][1]))
+    //             map.set(clothes[i][1], 1);
+    //         else 
+    //             map.set(clothes[i][1], map.get(clothes[i][1]) + 1);
+    //     }
+    //     console.log(map);
+
+    //     /**
+    //      * 해당 의상을 선택하지 않을 경우도 있기 때문에 각 개수에 1을 더하고
+    //      * 각 의상의 종류별 개수를 곱한다.
+    //      */
+    //     for (let value of map.values())
+    //         answer *= value + 1;
+
+    //     // 모두 선택하지 않은 경우는 제외
+    //     return answer - 1;
+    // }
+
+    // function solution(clothes) {
+    //   const map = new Map();
+    //   let res = 1;
+    //   const obj = clothes.reduce((obj, item) => {
+    //     const val = item[1];
+    //     map.set(val, (map.get(val) || 0) + 1);
+    //     return obj;
+    //   }, map);
+    //   for (let value of map.values()) {
+    //     res *= value + 1;
+    //   }
+    //   return res - 1;
+    // }
+
+
+    function solution(clothes) {
+      const map = new Map();
+      let res = 1;
+      const obj = clothes.reduce((obj, item) => {
+        const v = item[1];
+        const k = obj[v];
+        obj[v] = k ? k + 1 : 1;
+        return obj;
+      }, {});
+
+      for (let value in obj) {
+        res *= obj[value] + 1;
+      }
+      return res - 1;
+    }
+
+    function solution(clothes) {
+      return Object.values(clothes.reduce((obj, t) => {
+        obj[t[1]] = obj[t[1]] ? obj[t[1]] + 1 : 1;
+        return obj;
+      }, {})).reduce((a, b) => a * (b + 1), 1) - 1;
+    }
+
+
+    function solution(clothes) {
+      return Object.values(
+          clothes.reduce((obj, t) => (obj[t[1]] = obj[t[1]] ? obj[t[1]] + 1 : 1, obj), {}))
+        .reduce((a, b) => a * (b + 1), 1) - 1;
+    }
+
+
+    function solution(answers) {
+      const map = new Map;
+      map.set("p", [
+        [1, 2, 3, 4, 5],
+        [2, 1, 2, 3, 2, 4, 2, 5],
+        [3, 3, 1, 1, 2, 2, 4, 4, 5, 5],
+      ]);
+
+      // for(let [k,v] of map){
+      //   console.log(k,v);
+      //   console.log(v.length);
+      // }
+
+      answers.reduce((arr, val, idx) => {
+        console.log(idx);
+        map.get('p').filter((item, idx) => {
+          // console.log(item);
+          item.length
+        })
+        // if(map.get('p1')[i % map.get('p1').length] === val){
+
+        // }
+        return arr
+      }, [])
+      return answers;
+    }
+
+
+
+    function solution(answers) {
+      const map = new Map();
+      map.set('person', [
+        [1, 2, 3, 4, 5],
+        [2, 1, 2, 3, 2, 4, 2, 5],
+        [3, 3, 1, 1, 2, 2, 4, 4, 5, 5]
+      ]);
+      const p = map.get('person');
+      const count = answers.reduce((arr, val, i) => {
+        if (p[0][i % p[0].length] === answers[i]) arr[0]++;
+        if (p[1][i % p[1].length] === answers[i]) arr[1]++;
+        if (p[2][i % p[2].length] === answers[i]) arr[2]++;
+        return arr
+      }, [0, 0, 0]);
+      const max = Math.max(...count);
+      return count.reduce((arr, val, idx) => {
+
+        if (val === max) arr.push(Number(idx) + 1);
+        return arr
+      }, []);
+    }
+
+
     console.log(
       solution(
-        ["mislav", "stanko", "mislav", "ana"],	["stanko", "ana", "mislav"]
+        [1, 2, 3, 4, 5]
       )
     );
-    console.clear()
+    // 23
+    //     1. yellow_hat
+    //     2. blue_sunglasses
+    //     3. green_turban
+    //     4. yellow_hat + blue_sunglasses
+    //     5. green_turban + blue_sunglasses
+
+
+    // console.log(
+    //   solution(
+    //    [["crow_mask", "face"], ["blue_sunglasses", "face"], ["smoky_makeup", "face"]]
+    //   )
+    // )
+
+
+    function helloworld(...arg) {
+      console.log(arg);
+      return arg.map(item => item.concat(5))
+    }
+    const c_helloworld = _curry(helloworld)([
+      [1, 2]
+    ]);
+
+    console.log(
+      c_helloworld([1, 2])
+    );
+    console.clear();
+
+
+    var users = [{
+        id: 101,
+        name: "ID"
+      },
+      {
+        id: 102,
+        name: "BJ"
+      },
+      {
+        id: 103,
+        name: "PJ"
+      },
+      {
+        id: 104,
+        name: "HA"
+      },
+      {
+        id: 105,
+        name: "JE"
+      },
+      {
+        id: 106,
+        name: "JI"
+      },
+      {
+        id: 109,
+        name: "EK"
+      },
+    ]
+    var posts = [{
+        id: 201,
+        body: "내용1",
+        user_id: 101
+      },
+      {
+        id: 202,
+        body: "내용2",
+        user_id: 101
+      },
+      {
+        id: 203,
+        body: "내용3",
+        user_id: 103
+      },
+      {
+        id: 204,
+        body: "내용4",
+        user_id: 104
+      },
+      {
+        id: 205,
+        body: "내용5",
+        user_id: 101
+      },
+    ];
+    var comments = [{
+        id: 300,
+        body: "댓글0",
+        user_id: 104,
+        post_id: 200
+      },
+      {
+        id: 301,
+        body: "댓글1",
+        user_id: 105,
+        post_id: 201
+      },
+      {
+        id: 302,
+        body: "댓글2",
+        user_id: 106,
+        post_id: 202
+      },
+      {
+        id: 303,
+        body: "댓글3",
+        user_id: 107,
+        post_id: 203
+      },
+      {
+        id: 304,
+        body: "댓글4",
+        user_id: 108,
+        post_id: 204
+      },
+      {
+        id: 305,
+        body: "댓글5",
+        user_id: 109,
+        post_id: 205
+      },
+      {
+        id: 306,
+        body: "댓글6",
+        user_id: 101,
+        post_id: 206
+      },
+      {
+        id: 307,
+        body: "댓글7",
+        user_id: 102,
+        post_id: 207
+      },
+      {
+        id: 308,
+        body: "댓글8",
+        user_id: 103,
+        post_id: 208
+      },
+      {
+        id: 309,
+        body: "댓글9",
+        user_id: 104,
+        post_id: 209
+      },
+    ];
+
+
+
+    function posts_by(attr) {
+      return _.where(posts, attr);
+    }
+
+    var comments_by_posts = _.pipe(
+      _.pluck('id'),
+      function (post_ids) {
+        return _filter(comments, comment => {
+          return _.contains(post_ids, comment.post_id)
+        })
+      },
+    );
+
+
+    // 1. 특정인의 posts의 모든 comments 거르기
+    var f1 = _.pipe(posts_by, comments_by_posts);
+    console.log( f1({user_id: 101}) );
+
+
+    // 2, 특정인의 posts에 comments를 단 친구의 이름들 뽑기
+    var user_names_by_comments = _.map(comment => {
+      return _.find(users, user => user.id === comment.user_id).name
+    });
+    var f2 = _.pipe(
+      f1,
+      user_names_by_comments,
+      _.uniq)
+    console.log( f2({user_id: 101}) );
+
+
+    // 3. 특정인의 posts에 comments를 단 친구들 카운트 정보
+    var f3 = _.pipe(
+      f1,
+      user_names_by_comments,
+      _.count_by
+    )
+    console.log( f3({user_id:101}) );
+
+    
   </script>
 </body>
 
