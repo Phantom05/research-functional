@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    var c = 10;
+    
+    function add(a,b){
+      return a+b;
+    }
+
+    function add2(a,b){
+      return a+b+c;
+    }
+
+    console.log(
+      add(10,20)
+    );
+    console.log(
+      add2(10,20)
+    );
+
+    function add5(obj,b){
+      return {val:obj.val +b}
+    }
+
+    const obj1 = {
+        val:10
+      }
+    console.log(
+      add5(obj1,20)
+    );
+    console.log(obj1);
+
+
+
+  </script>
+</body>
+</html>
