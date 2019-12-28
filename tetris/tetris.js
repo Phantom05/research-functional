@@ -204,6 +204,7 @@ const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'navy', 'violet'];
 const isActiveBlock = value => (value > 0 && value < 10);
 const isInvalidBlock = value => (value === undefined || value >= 10);
 
+// 칸 그리기
 function init() {
   const fragment = document.createDocumentFragment();
   [...Array(20).keys()].forEach((col, i) => {
@@ -255,7 +256,7 @@ function generate() { // 테트리스 블록 생성
   currentBlock.currentShapeIndex = 0;
   nextBlock = blocks[Math.floor(Math.random() * blocks.length)]; // 다음 블록 미리 생성
   console.log(currentBlock);
-  drawNext();
+  drawNext(); // 작은 테이블에 다음에 나올 블록을 그리는 함수
   currentTopLeft = [-1, 3];
   let isGameOver = false;
   currentBlock.shape[0].slice(1).forEach((col, i) => { // 게임 오버 판단
@@ -348,10 +349,14 @@ function tick() { // 한 칸 아래로
   }
 }
 
+
+// 이벤트, 동작부분
+
 let int = setInterval(tick, 2000);
 init();
 generate();
 
+// 게임 정지, 시작
 document.getElementById('stop').addEventListener('click', function() {
   clearInterval(int);
 });
@@ -361,6 +366,7 @@ document.getElementById('start').addEventListener('click', function() {
   }
   int = setInterval(tick, 2000);
 });
+// 소리끔 킴
 document.getElementById('mute').addEventListener('click', function() {
   if (document.getElementById('bgm').paused) {
     document.getElementById('bgm').play();
@@ -368,6 +374,7 @@ document.getElementById('mute').addEventListener('click', function() {
     document.getElementById('bgm').pause();
   }
 });
+
 
 window.addEventListener('keydown', (e) => {
   switch (e.code) {
@@ -380,7 +387,6 @@ window.addEventListener('keydown', (e) => {
         for (let j = currentTopLeft[1]; j < currentTopLeft[1] + currentBlockShape.length; j++) {
           if (!tetrisData[i] || !tetrisData[i][j]) continue;
           if (isActiveBlock(tetrisData[i][j]) && isInvalidBlock(tetrisData[i] && tetrisData[i][j - 1])) {
-            console.log(i, j, tetrisData[i][j], tetrisData[i][j-1]);
             isMovable = false;
           }
         }
@@ -411,7 +417,6 @@ window.addEventListener('keydown', (e) => {
         for (let j = currentTopLeft[1]; j < currentTopLeft[1] + currentBlockShape.length; j++) {
           if (!tetrisData[i] || !tetrisData[i][j]) continue;
           if (isActiveBlock(tetrisData[i][j]) && isInvalidBlock(tetrisData[i] && tetrisData[i][j + 1])) {
-            console.log(i, j);
             isMovable = false;
           }
         }
