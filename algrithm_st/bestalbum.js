@@ -76,7 +76,7 @@
 //   }
 
 //   // map을 순회하면서 가장 많이 재생된 장르를 순서대로 tempArr 배열에 저장 (ex. [pop, classic ..])
-  
+
 
 //   let tempArr = [];
 //   while(map.size){
@@ -103,16 +103,16 @@
 //         t.push(playMap.get(key))
 //       }
 //     }
-    
+
 //     // 해당 장르의 재생 수가 임시로 저장된 t 배열을 내림차순 정렬
 //     t.sort((a,b)=> b-a);
 
 //     // 각 장르는 최대 2곡밖에 수록되지 않기 대문에 많은 재생수의 2곡을 자른다
 //     if(t.length >2) t = t.slice(0,2);
-    
+
 //     //만약 재생 수가 같은 경우 중복을 제거한다,
 //     t = [...new Set(t)]; // 스프레드로 풀어주면 배열로 풀린다.
-    
+
 //     console.log(playMap);
 //     // t 배열을 순회한다
 //     for (let j = 0; j < t.length; j++) {      
@@ -130,38 +130,27 @@
 
 
 
-function solution(genres, plays){
+function solution(genres, plays) {
   let map = new Map;
-  for(let i = 0 ; i < genres.length; i++){
+  for (let i = 0; i < genres.length; i++) {
     const key = genres[i];
     const value = plays[i];
-    if(map.has(key)){
-      map.get(key).list.push({seq:i,value});
+    if (map.has(key)) {
+      map.get(key).list.push({ seq: i, value });
       map.get(key).total += value;
-    }else{
-      map.set(key,{
-        total:value,
-        list:[{
-          seq:i,
-          value}]
-      })
+    } else {
+      map.set(key, { total: value, list: [{ seq: i, value }] });
     }
   }
 
   const newSet = [...new Set(map)];
-  newSet.sort((a,b)=>b[1].total - a[1].total);
-  const answer = newSet.reduce((arr,val)=>{
+  newSet.sort((a, b) => b[1].total - a[1].total);
+  const answer = newSet.reduce((arr, val) => {
     let list = val[1].list;
-    list.sort((a,b)=>{
-      if(a.value === b.value){
-        return a.seq  - b.seq
-      }else{
-        return b.value - a.value
-      }
-    });
-    if(list.length >2) list  =list.slice(0,2);
-    return arr.concat(list.map(item=>item.seq));
-  },[]);
+    list.sort((a, b) => a.value === b.value ? a.seq - b.seq : b.value - a.value);
+    if (list.length > 2) list = list.slice(0, 2);
+    return arr.concat(list.map(item => item.seq));
+  }, []);
   return answer;
 }
 
@@ -180,3 +169,5 @@ console.log(
 //   new Set(a)
 // );
 // console.log(b);
+
+// DFS/BFS
