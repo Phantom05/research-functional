@@ -178,6 +178,10 @@ console.log(
 );
 console.log(myHealth);
 
+console.log(
+  `Hello world`
+);
+
 
 let testObj = {};
 const testProto = {
@@ -188,7 +192,35 @@ const testProto = {
 Object.setPrototypeOf(testObj,testProto);
 console.log(testObj.hello());
 
+function hello(){
+  return `hello world!`
+}
 
+function world(){
+  `return hell oworld!`
+}
+console.log('hello world!');
+function test(){
+  return `test`
+}
 
+function hello(){
+  function wow(){
+    return '`wow'
+  }
+
+  function wow1(){
+    return 'wow!!!'
+  }
+
+  function wow2(){
+    return 'wow2'
+  }
+
+  function wow3(){
+    return 'wow4'
+  }
+  
+}
 
 console.clear()

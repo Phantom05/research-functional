@@ -1,0 +1,26 @@
+*{padding:0;margin:0;box-sizing: border-box;}
+header{
+  border-bottom: 1px solid #ddd;
+}
+li{
+  list-style: none;;
+}
+.header__menu_con{
+  overflow: hidden;
+}
+.header__menu{
+  float: left;
+  margin-right: 10px;
+}
+h1{
+  font-size: 40px;
+  color: #ddd;
+  font-weight: bold;
+}
+p{
+  font-size: 14px;;
+}
+.main__title{
+  margin-top:20px;
+  margin-bottom: 30px;
+}
