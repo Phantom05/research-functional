@@ -1,29 +1,40 @@
-<script>const log = console.log;</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>const log = console.log;</script>
 
-# 평가
-- 코드가 계산(Evaluation) 되어 값을 만드는 것
+# 평가 <br>
+- 코드가 계산(Evaluation) 되어 값을 만드는 것 <br>
 
-# 일급
-- 값으로 다룰 수 있다.
-- 변수에 담을 수 있다.
-- 함수의 인자로 사용될 수 있다.
-- 함수의 결과로 사용될 수 있다.
+# 일급 <br>
+- 값으로 다룰 수 있다. <br>
+- 변수에 담을 수 있다. <br>
+- 함수의 인자로 사용될 수 있다. <br>
+- 함수의 결과로 사용될 수 있다. <br>
 
 <script>
   const a = 10;
   const add10 = a => a + 10;
   const r = add10(a);
+  console.log(r);
   // log(r);
 </script>
 
-# 일급 함수
-- 함수를 값으로 다룰 수 있다.
-- 조합성과 추상화의 도구
+# 일급 함수 <br>
+- 함수를 값으로 다룰 수 있다. <br>
+- 조합성과 추상화의 도구 <br>
 
 <script>
   const add5 = a => a + 5;
   log(add5);
   log(add5(5));
+  log(add5(10))
 
   const f1 = () => () => 1;
   log(f1());
@@ -31,4 +42,10 @@
   const f2 = f1();
   log(f2);
   log(f2());
+  
+
+
 </script>
+</body>
+</html>
+
