@@ -224,3 +224,6 @@ function hello(){
 }
 
 console.clear()
+
+console.log(`hello world`);
+
