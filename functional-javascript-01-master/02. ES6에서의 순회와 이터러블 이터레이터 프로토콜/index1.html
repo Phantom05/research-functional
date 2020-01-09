@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+  <input type="text">
+  <script>
+  const log = console.log;
+
+    const iterable = {
+      [Symbol.iterator](){
+        let i = 3;
+        return {
+          next(){
+            return i ==0?{done:true} : {value: i--,done:false}
+          },
+          [Symbol.iterator](){return this;}
+        }
+      }
+    }
+
+
+    const iterator = iterable[Symbol.iterator]();
+
+    log(iterator)
+
+    for(const a of iterable) log(a);
+
+    console.clear();
+    const arr2 = [1,2,3];
+    let iter2 = arr2[Symbol.iterator]();
+    console.log(
+      iter2.next()
+    );
+    console.log(
+      iter2.next()
+    );
+    console.log(
+      iter2.next()
+    );
+    console.log(
+      iter2.next()
+    );
+    for(const a of arr2) log(a);
+
+
+    console.clear();
+    for(const a of document.querySelectorAll('*')) log(a);
+    const all = document.querySelectorAll('*');
+    let iter3 = all[Symbol.iterator]();
+    log(iter3.next())
+    log(iter3.next())
+    log(iter3.next())
+  </script>
+  <script>
+    console.clear();
+
+    const a = [1,2];
+    // a[Symbol.iterator] = null;
+    log(...a,...[3,4]);
+    // 이터레이터는 next next next 나오고 done나오는 반복
+
+    function *gen(){
+      yield 1;
+      if(false) yield 2
+      yield 3;
+      return 100;
+    }
+    let iter = gen();
+    log(iter[Symbol.iterator]() == iter)
+    log(iter.next())
+    log(iter.next())
+    log(iter.next())
+    log(iter.next())
+
+    for(const a of gen()) log(a);
+    
+    console.clear();
+
+
+    function *infinity(i=0){
+      while(true) yield i+=1;
+    }
+
+    function *odds(l){
+      for(const a of infinity(1)){
+        if(a % 2) yield a;
+        if(a == l) return;
+      }
+    }
+
+    function *limit(l,iter){
+      for(const a of iter){
+        yield a;
+        if(a == l) return;
+      }
+    }
+
+    let iter4 = odds(10);
+    const iter5 = infinity();
+    let iter6 = limit(4,[1,2,3,4,5,6]);
+
+    for(const a of odds(40)) log(a);
+
+
+    console.log(
+      ...odds(10)
+    );
+    console.log([...odds(10),...odds(20)]);
+
+    console.clear();
+
+
+    const products =[
+      {name:"반팔티", price:15000},
+      {name:"긴팔티", price:20000},
+      {name:"핸드폰케이스",price:15000},
+      {name:"후드티", price:30000},
+      {name:"바지", price:25000}
+    ];
+
+    const map = (f,iter) =>{
+      const new_list =[];
+      for(const p of iter){
+        new_list.push(f(p));
+      }
+      return new_list
+    }
+
+    // let names =[];
+    // for(const p of products){
+    //   names.push(p.name)
+    // }
+    // log(names);
+
+    // let prices =[];
+    // for(const p of products){
+    //   prices.push(p.price)
+    // }
+    // log(prices); 
+
+    log(
+      map(p=>p.name,products)  
+    );
+    log(
+      map(p=>p.price,products)  
+    );
+
+
+  </script>
+</body>
+</html>
