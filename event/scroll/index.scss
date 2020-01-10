@@ -1,0 +1,23 @@
+.box{
+  position: relative;
+  height: 200px;
+  background: orange;;
+  border: 1px solid #eee;
+  text-align: right;
+  &[data-target]{
+    &:after{
+      position: absolute;
+      // top: 50%;
+      // transform: translateY(-50);
+      top:0;
+      content: 'start';
+      clear: both;
+      right: 0;
+      width: 70px;
+      background: red;
+      height: 1px;
+
+    }
+  }
+}
+
